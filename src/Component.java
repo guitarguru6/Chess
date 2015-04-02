@@ -14,7 +14,7 @@ public class Component extends Applet implements Runnable{
 	private static boolean isRunning = false;
 	
 	private static Graphics g;
-	private static Image screen;
+	private static Image screen; // Acts as an image buffer for the screen
 	
 	public static Window window;
 	public static void main(String[] args) {
@@ -57,7 +57,7 @@ public class Component extends Applet implements Runnable{
 		g = screen.getGraphics();
 		
 		g.setColor(Color.blue);
-		g.fillRect(0, 0, width, height);
+		g.fillRect(0, 0, width, height); // fills in a blue background
 		
 		g = getGraphics();
 		g.drawImage(screen, 0, 0, null);
