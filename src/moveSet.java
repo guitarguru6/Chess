@@ -1,6 +1,6 @@
 import java.awt.Point;
 
-public class moveSet {
+public class MoveSet {
 
 	private final static byte WPAWN = 1;
 	private final static byte BPAWN = 2;
@@ -14,46 +14,61 @@ public class moveSet {
 	private final static byte BQUEEN = 10;
 	private final static byte WKING = 11;
 	private final static byte BKING = 12;
-	
-	
 
 	public static String getPiecetype(int pieceCode) {
-		switch (pieceCode) {
-		case WPAWN:
-			return ("White Pawn");
-		case BPAWN:
-			return ("Black Pawn");
-		case WKNIGHT:
-			return ("White Knight");
-		case BKNIGHT:
-			return ("Black Knight");
-		case WBISHOP:
-			return ("White Bishop");
-		case BBISHOP:
-			return ("Black Bishop");
-		case WROOK:
-			return ("White Rook");
-		case BROOK:
-			return ("Black Rook");
-		case WQUEEN:
-			return ("White Queen");
-		case BQUEEN:
-			return ("Black Queen");
-		case WKING:
-			return ("White King");
-		case BKING:
-			return ("Black King");
-		}
 
 		System.err.print("Invalid Piece Code");
 		return "";
 	}
-	
-	public Point[] getWPawnMoves() {
-		return new Point[]{new Point (0, -1)}; 
+
+	public static int absDiff(int a, int b) {
+		return Math.abs(a - b);
 	}
-	
-	public Point[] getBPawnMoves() {
-		return new Point[]{new Point (0, 1)}; 
+
+	public static boolean isLegalMove(byte pieceCode, Point from, Point to) {
+
+		switch (pieceCode) {
+		case 0:
+			return false;
+		case WPAWN:
+			return isWPawnMoveLegal(from, to);
+		case BPAWN:
+			return isBPawnMoveLegal(from, to);
+		}
+
+		return false;
 	}
+
+	public static boolean isWPawnMoveLegal(Point from, Point to) {
+		if (!Board.isInBounds(to))
+			return false;
+		if (from.x == to.x && from.y - 1 == to.y && !Board.spotOccupied(to))
+			return true;
+		if (absDiff(from.x, to.x) == 1 && from.y - 1 == to.y
+				&& Board.spotOccupied(to))
+			return true;
+		return false;
+	}
+
+	public static boolean isBPawnMoveLegal(Point from, Point to) {
+		if (!Board.isInBounds(to))
+			return false;
+		if (from.x == to.x && from.y + 1 == to.y && !Board.spotOccupied(to))
+			return true;
+		if (absDiff(from.x, to.x) == 1 && from.y + 1 == to.y
+				&& Board.spotOccupied(to))
+			return true;
+		return false;
+	}
+
+	public static boolean isWKnightMoveLegal(Point from, Point to) {
+		// TODO write method to test if an white knight move is legal
+		return false;
+	}
+
+	public static boolean isBKnightMoveLegal(Point from, Point to) {
+		// TODO write method to test if an white knight move is legal
+		return false;
+	}
+
 }
