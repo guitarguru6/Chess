@@ -1,4 +1,13 @@
 # Chess
 
-Okay so far this is just the base of the program, nothing specific to the program itself has been added, it is just a window.
-This is a test upload. . .
+Current classes:
+
+- Component.java:
+        public static void main() - Adds Component and Window object, adds Component object to the Window object.
+        public void init() - Makes isRunning true, initializes and starts a new thread.
+        public void run() - While isRunning, activates tick() and render() then tries a thread.sleep(20).
+        public void tick() - Currently empty.
+        public void render() - Initializes image buffer, Draws a blue rectangle.
+
+- Window.java
+        public Window(int width, int height, String title) - Sets title, window size, resize bool and visibility.
