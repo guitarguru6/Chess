@@ -24,7 +24,29 @@ public class Board {
 
 		return isInBounds(p) && board[p.x][p.y] == 0;
 	}
-	
+
+	public static boolean spotOccupiedByWhite(Point p) {
+		//v
+		if (board == null)//<
+			return false;//<
+		if (!isInBounds(p) || board[p.x][p.y] == 0)//<
+			return false;//<
+		//^may be redundant
+
+		return (spotOccupied(p) && getValueAtPos(p) % 2 == 1);
+	}
+
+	public static boolean spotOccupiedByBlack(Point p) {
+		//v
+		if (board == null)//<
+			return false;//<
+		if (!isInBounds(p) || board[p.x][p.y] == 0)//<
+			return false;//<
+		//^may be redundant
+
+		return (spotOccupied(p) && getValueAtPos(p) % 2 == 0);
+	}
+
 	public static byte getValueAtPos(Point p) {
 		return board[p.x][p.y];
 	}
