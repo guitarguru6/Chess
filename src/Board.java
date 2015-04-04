@@ -3,11 +3,11 @@ import java.awt.Point;
 public class Board {
 	private static byte[][] board;
 
-	public void initBoard() {
+	public static void initBoard() {
 		board = new byte[8][8];
 		for (int x = 0; x < board.length; x++) {
 			for (int y = 0; y < board[x].length; y++) {
-				// board[x][y] = ;
+				board[x][y] = 0;
 			}
 		}
 	}
@@ -19,29 +19,31 @@ public class Board {
 	}
 
 	public static boolean spotOccupied(Point p) {
-		if (board == null)
+		if (board == null) {
+			initBoard();
 			return false;
+		}
 
 		return isInBounds(p) && board[p.x][p.y] == 0;
 	}
 
 	public static boolean spotOccupiedByWhite(Point p) {
-		//v
-		if (board == null)//<
-			return false;//<
-		if (!isInBounds(p) || board[p.x][p.y] == 0)//<
-			return false;//<
+//		
+//		if (board == null)
+//			return false;
+//		if (!isInBounds(p) || board[p.x][p.y] == 0)
+//			return false;
 		//^may be redundant
 
 		return (spotOccupied(p) && getValueAtPos(p) % 2 == 1);
 	}
 
 	public static boolean spotOccupiedByBlack(Point p) {
-		//v
-		if (board == null)//<
-			return false;//<
-		if (!isInBounds(p) || board[p.x][p.y] == 0)//<
-			return false;//<
+		
+//		if (board == null)
+//			return false;
+//		if (!isInBounds(p) || board[p.x][p.y] == 0)
+//			return false;
 		//^may be redundant
 
 		return (spotOccupied(p) && getValueAtPos(p) % 2 == 0);
