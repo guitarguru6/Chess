@@ -21,14 +21,14 @@ public class Space {
 	}
 	
 	private int rankCheck(int i) {
-		if(i < 1) return 1;
+		if(i < 0) return 1;
 		if(i > 8) return 8;
 		
 		return i;
 	}
 
 	public Space(int c, int i) {
-		this( (char) (c + 64), i);
+		this( (char) (c + 65), i);
 		
 	}
 
@@ -58,6 +58,10 @@ public class Space {
 	
 	public String getPointForPrinting() {
 		return "(" + (getFileNum() + 1) + ", "+ (getRank() + 1) + ")";
+	}
+	
+	public void print() {
+		System.out.println((file) + "" + (rank));
 	}
 	
 	@Override

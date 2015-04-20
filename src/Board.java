@@ -1,12 +1,22 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Board {
 	
 	private char[][] board;
 	
+	private int moveCount = 0;
+	
+	private ArrayList<Move> moves = new ArrayList<Move>();
+	
 	public Board() {
-		board = new char[][] { 
+		board = newChessBoard();
+	}
+	
+	private static char[][] newChessBoard() {
+		return new char[][] { 
 				{ 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R' },// 8
 				{ 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' },// 7
 				{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },// 6
@@ -14,12 +24,22 @@ public class Board {
 				{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },// 4
 				{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },// 3
 				{ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' },// 2
-				{ 'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r' } // 1
+				{ 'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r' } // 1
 				};
 		// 		   a    b    c    d    e    f    g    h
 
 	}
-
+	
+	public void setBoard(char[][] c) {
+		board = c;
+	}
+	
+	public void resetChessBoard() {
+		board = newChessBoard();
+		resetMoveCounter();
+		moves = new ArrayList<Move>();
+	}
+	
 	public boolean isInBounds(Point p) {
 		return p.x >= 0 && p.x < board.length && p.y >= 0 && p.y < board[p.x].length;
 	}
@@ -50,20 +70,75 @@ public class Board {
 
 		return (Character.isUpperCase(getAt(p1)) == Character.isUpperCase(getAt(p2)));
 	}
+	
+	private void resetMoveCounter() {
+		moveCount = 0;
+	}
 
 	public boolean move(Space f, Space t) {
 		Point from = f.getPoint(), to = t.getPoint();
 		if (getAt(from) == ' ' || getAt(to) == 'K' || getAt(to) == 'k'|| isSameColor(from, to)) return false;
 		
 		boolean takes = getAt(to) != ' ';
+		char piece = Character.toLowerCase(getAt(from));
 		
+		printMove(f, t, takes);
+		Move m = new Move(f, t, takes, piece);
+		moves.add(m);
 		setAt(to, getAt(from));
 		setAt(from, ' ');
 		
-		if (takes) System.out.println("Piece at " + f + " takes piece at " + t + ".");
-		else System.out.println("Moved piece from " + f + " to " + t);
+//		if (takes) {
+//			if(piece == 'p') System.out.println(f.getFile() + "x" + t);
+//			else System.out.println(piece + "x" + t);//System.out.println("Piece at " + f + " takes piece at " + t + ".");
+//		}
+//		else {
+//			if(piece == 'p') System.out.println(t);
+//			else System.out.println(piece + "" + t); //System.out.println("Moved piece from " + f + " to " + t);
+//		}
+		
+		//moveCount++;
+		
+		//System.out.println("Move # " + moveCount);
 		
 		return true;
+	}
+	
+	private void printMove(Space f, Space t, boolean takes) {
+		moveCount++;
+		if(moveCount % 2 == 1) System.out.print((moveCount/2+1) + ". ");
+		char piece = Character.toUpperCase(getAt(f.getPoint()));
+		Move m = new Move(f, t, takes, piece);
+		System.out.print(m);
+		if(moveCount % 2 == 0) System.out.println();
+	}
+	
+	private void drawMoves(Graphics g) {// broken for now
+		String s = "";
+		int off = 0;
+		for(int i = 0; i < moves.size(); i++) {
+			if(i % 2 == 1) s += (moveCount+2/2) + ". ";
+			s += moves.get(i);
+			if(i % 2 == 0 && i+1 != moves.size()) {
+				g.setColor(Color.BLACK);
+				g.drawString(s, 510, 20 + off);
+				s = "";
+				off += 30;
+			}
+		}
+		g.setColor(Color.BLACK);
+		g.drawString(s, 510, 20 + off);
+	}
+
+	public int getMoveCount() {
+		return moveCount;
+	}
+
+	public void setMoveCount(int moveCount) {
+		this.moveCount = moveCount;
+	}
+	public void incMoveCount() {
+		this.moveCount++;
 	}
 
 	public String toString() {
@@ -87,5 +162,6 @@ public class Board {
 				PieceImageManager.drawPieceImage(board[7-file][rank], rank, file, g);
 			}
 		}
+		//drawMoves(g);
 	}
 }

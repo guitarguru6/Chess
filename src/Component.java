@@ -41,8 +41,7 @@ public class Component extends Applet implements Runnable {
 	public void init() {
 		isRunning = true;
 
-		// screen = createImage(width, height) /// Appears to be redundant due
-		// to its use in render(Graphics g).
+		// screen = createImage(width, height) /// Appears to be redundant due to its use in render(Graphics g).
 		listening = new Listening();
 		addMouseListener(listening);
 		addMouseMotionListener(listening);
@@ -56,12 +55,13 @@ public class Component extends Applet implements Runnable {
 			System.err.println("Error occured while loading the board image");
 		}
 
-		Thread th = new Thread(this);
-		th.start();
+		//Thread th = new Thread(this);
+		//th.start();
+		new Thread(this).start(); // changed to be more concise
 	}
 	
 	public static void restartBoard() {
-		board = new Board();
+		board.resetChessBoard();
 	}
 	
 	public static Board getBoard() {
@@ -114,6 +114,7 @@ public class Component extends Applet implements Runnable {
 		g.drawImage(boardImage, 0, 0, null); // draws the board
 		
 		highlightSpaceUnderMouse(g); // highlights the square under the mouse in yellow
+		listening.render(g);
 		
 		board.render(g); // draws the pieces on the board
 		
